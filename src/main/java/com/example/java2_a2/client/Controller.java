@@ -2,7 +2,6 @@ package com.example.java2_a2.client;
 
 import com.example.java2_a2.network.Client;
 import com.example.java2_a2.network.Message;
-
 import java.util.HashMap;
 import java.util.function.Consumer;
 
@@ -10,7 +9,7 @@ public class Controller {
     Client client = new Client(0);
     Consumer<Message> gameStatusUpdateCallback = msg -> {};
     Consumer<String> updateInfo = msg -> {};
-    Consumer<Integer> updateTimeout = value ->{};
+    Consumer<Integer> updateTimeout = value -> {};
     HashMap<String, Message> messages = new HashMap<>();
     boolean crashed = false;
 

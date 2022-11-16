@@ -12,7 +12,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -23,7 +22,7 @@ public class MainPane extends HBox {
     private final ObservableList<String> waitingList = FXCollections.observableArrayList();
     private final Text turnText = new Text();
     private final Text timeoutText = new Text("timeout: 5");
-    private final TextField chooseTF = new TextField();
+    private final TextField chooseTextField = new TextField();
     Text[][] chessboardTexts = new Text[3][3];
 
     public MainPane(Controller controller) {
@@ -41,15 +40,14 @@ public class MainPane extends HBox {
             for (int j = 0; j < 3; j++) {
                 chessboardTexts[i][j] = new Text("?");
                 chessboardTexts[i][j].setFont(new Font(16));
-                int finalI = i;
-                int finalJ = j;
-
                 VBox pane = new VBox();
                 pane.setPrefHeight(50);
                 pane.setPrefWidth(50);
                 pane.setAlignment(Pos.CENTER);
                 pane.getChildren().add(chessboardTexts[i][j]);
                 pane.setBackground(Utils.bg(Color.WHITE));
+                int finalI = i;
+                int finalJ = j;
                 pane.setOnMouseClicked(e -> chessBoardClick(finalI, finalJ));
                 chessboard.add(pane, j, i);
             }
@@ -69,9 +67,10 @@ public class MainPane extends HBox {
         infoPane.getChildren().addAll(
                 turnText,
                 new HBox(joinButton, exitButton, restartButton),
-                new HBox(new VBox(new Text("infos:"), infos), new VBox(new Text("waiting list:"), waitingListView)),
+                new HBox(new VBox(new Text("infos:"), infos),
+                        new VBox(new Text("waiting list:"), waitingListView)),
                 timeoutText,
-                new HBox(chooseTF, chooseButton)
+                new HBox(chooseTextField, chooseButton)
         );
         joinButton.setOnAction(e -> joinBtnClick());
         exitButton.setOnAction(e -> exitBtnClick());
@@ -81,8 +80,12 @@ public class MainPane extends HBox {
         this.controller = controller;
         Consumer<Message> gameStatusUpdateCallback = this::statusUpdate;
         controller.setGameStatusUpdateCallback(gameStatusUpdateCallback);
-        controller.setUpdateInfo(msg -> Platform.runLater(() -> info(msg)));
-        controller.setUpdateTimeout(value -> Platform.runLater(() -> {setTimeout(value);}));
+        controller.setUpdateInfo(msg -> {
+            Platform.runLater(() -> info(msg));
+        });
+        controller.setUpdateTimeout(value -> Platform.runLater(() -> {
+            setTimeout(value);
+        }));
     }
 
     public void chessBoardClick(int i, int j) {
@@ -94,7 +97,7 @@ public class MainPane extends HBox {
             if (resp == null) return;
             Platform.runLater(() -> {
                 switch (resp.code()) {
-                    case 0 -> {}
+                    case 0 -> { }
                     case 1 -> info("not your turn.");
                     case 2 -> info("invalid step.");
 
@@ -115,10 +118,10 @@ public class MainPane extends HBox {
             String userName = (String) message.get("user_name");
             int timeout = (int) message.get("timeout");
 
+            setTimeout(timeout);
             updateWaitingList(waitingList);
             updateTurnInfo(userName, playerX, playerO, turn);
             updateChessboard(chessboard);
-            setTimeout(timeout);
         });
     }
 
@@ -207,7 +210,7 @@ public class MainPane extends HBox {
     }
 
     public void chooseBtnClick() {
-        String otherUser = chooseTF.getText();
+        String otherUser = chooseTextField.getText();
         Utils.async(() -> {
             Message resp = controller.request(new Message("choose").set("user", otherUser));
             if (resp == null) return;

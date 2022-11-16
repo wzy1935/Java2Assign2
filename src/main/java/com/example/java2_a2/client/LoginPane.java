@@ -50,10 +50,12 @@ public class LoginPane extends VBox {
             Message resp = controller.login(accountField.getText(), passwordField.getText());
             System.out.println(resp);
             if (resp != null) {
-                int code = (Integer) resp.get("code");
-                if (code == 0) Platform.runLater(() -> loginSucceedCallback.run());
-                if (code == 1) setErrMsg("wrong password.");
-                if (code == 2) setErrMsg("already login.");
+                switch (resp.code()) {
+                    case 0 -> Platform.runLater(() -> loginSucceedCallback.run());
+                    case 1 -> setErrMsg("wrong password.");
+                    case 2 -> setErrMsg("already login.");
+                    default -> setErrMsg("login failed.");
+                }
             } else {
                 setErrMsg("login failed.");
             }

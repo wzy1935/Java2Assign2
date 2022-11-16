@@ -29,8 +29,10 @@ public class Game {
 
         // diag
         for (int code : new int[]{1, -1}) {
-            if (chessboard[0][0] == code && chessboard[1][1] == code && chessboard[2][2] == code) return code;
-            if (chessboard[0][2] == code && chessboard[1][1] == code && chessboard[2][0] == code) return code;
+            if (chessboard[0][0] == code && chessboard[1][1] == code && chessboard[2][2] == code)
+                return code;
+            if (chessboard[0][2] == code && chessboard[1][1] == code && chessboard[2][0] == code)
+                return code;
         }
 
         if (!haveZero) return 2;

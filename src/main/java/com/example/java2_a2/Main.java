@@ -5,7 +5,6 @@ import com.example.java2_a2.client.ClientApp;
 import com.example.java2_a2.network.Client;
 import com.example.java2_a2.network.Server;
 import com.example.java2_a2.server.ServerApp;
-
 import java.util.Scanner;
 
 import static javafx.application.Application.launch;

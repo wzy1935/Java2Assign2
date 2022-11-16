@@ -1,10 +1,8 @@
 package com.example.java2_a2.server;
 
 import com.example.java2_a2.Game;
-import com.example.java2_a2.client.MainPane;
 import com.example.java2_a2.network.Message;
 import com.example.java2_a2.network.Server;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
@@ -57,7 +55,7 @@ public class ServerApp {
                 }
                 case "join" -> {
                     String userName = usersOnline.get(id);
-                    if (userName.equals(playerO) || userName.equals(playerX)|| waitingList.contains(userName)) {
+                    if (userName.equals(playerO) || userName.equals(playerX) || waitingList.contains(userName)) {
                         server.send(id, Message.pack(new Message("join", 1)));
                     } else {
                         if (playerO == null) {
@@ -73,7 +71,7 @@ public class ServerApp {
                 }
                 case "exit" -> {
                     String userName = usersOnline.get(id);
-                    if (!(userName.equals(playerO) || userName.equals(playerX)|| waitingList.contains(userName))) {
+                    if (!(userName.equals(playerO) || userName.equals(playerX) || waitingList.contains(userName))) {
                         server.send(id, Message.pack(new Message("exit", 1)));
                     } else {
                         if (userName.equals(playerO)) {
@@ -189,9 +187,9 @@ public class ServerApp {
             @Override
             public void run() {
                 if (timeout > 0) timeout--;
-                server.sendAll(Message.pack(new Message("timeout").set("value", timeout)),1000);
+                server.sendAll(Message.pack(new Message("timeout").set("value", timeout)), 1000);
             }
-        },0, 1000);
+        }, 0, 1000);
     }
 
     public static void main(String[] args) {
